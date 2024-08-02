@@ -1,4 +1,4 @@
-# Server plan 2
+# Server plan
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
@@ -6,12 +6,11 @@ metadata:
   namespace: system-upgrade
   labels:
     rke2-upgrade: server
-    app: test
 spec:
   concurrency: 1
   nodeSelector:
     matchExpressions:
-       - {key: node-role.kubernetes.io/control-plane, operator: In, values: ["true"]}
+      - {key: node-role.kubernetes.io/control-plane, operator: In, values: ["true"]}
   tolerations:
   - key: "CriticalAddonsOnly"
     operator: "Equal"
@@ -25,7 +24,7 @@ spec:
     image: rancher/rke2-upgrade
   version: v1.27.15-rke2r1
 ---
-# Agent plan 2
+# Agent plan
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
@@ -37,7 +36,7 @@ spec:
   concurrency: 1
   nodeSelector:
     matchExpressions:
-      - {key: node-role.kubernetes.io/control-plane, operator: DoesNotExist}
+      - {key: node-role.kubernetes.io/control-plane, operator: NotIn, values: ["true"]}
   prepare:
     args:
     - prepare
